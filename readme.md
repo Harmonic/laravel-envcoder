@@ -64,6 +64,16 @@ ENV_PASSWORD=passwordHere
 
 This way you will not be prompted for a password each time you encrypt/decrypt the .env file.
 
+## Configuration
+
+After publishing the config you can change the default behaviour for environment variable conflict resolution. To one of the following:
+
+* 'merge' => Will merge changes in both files, and overwrite duplicates with what is in .env.enc (default)
+* 'prompt' => Will prompt you for each value that has a different value in .env.enc vs .env or is not in both files
+* 'overwrite' => Will completely overwrite your .env with what is in the encrypted version
+* 'ignore' => Will ignore any changes in your encrypted .env (ie. will not decrypt)
+
+See config/laravel-envcoder.php for more details.
 
 ## Change log
 
