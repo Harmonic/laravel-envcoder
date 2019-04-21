@@ -1,0 +1,44 @@
+{
+    "name": "harmonic/laravel-envcoder",
+    "description": ":description",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Craig Harman",
+            "email": "craig@harmonic.com.au",
+            "homepage": "https://harmonic.com.au"
+        }
+    ],
+    "homepage": "https://github.com/harmonic/laravel-envcoder",
+    "keywords": ["Laravel", "laravel-envcoder"],
+    "require": {
+        "illuminate/support": "~5",
+        "defuse/php-encryption": "^2.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5",
+        "mockery/mockery": "^1.1",
+        "orchestra/testbench": "~3.0",
+        "sempro/phpunit-pretty-print": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "harmonic\\LaravelEnvcoder\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "harmonic\\LaravelEnvcoder\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "harmonic\\LaravelEnvcoder\\LaravelEnvcoderServiceProvider"
+            ],
+            "aliases": {
+                "LaravelEnvcoder": "harmonic\\LaravelEnvcoder\\Facades\\LaravelEnvcoder"
+            }
+        }
+    }
+}
