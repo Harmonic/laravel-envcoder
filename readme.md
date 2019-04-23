@@ -32,7 +32,7 @@ php artisan vendor:publish --provider="harmonic\LaravelEnvcoder"
 
 ## Usage
 
-# Encypting your .env
+### Encypting your .env
 
 From your project root simply run:
 
@@ -47,7 +47,7 @@ php artisan env:encrypt --password=password
 ```
 (replace password with your password)
 
-# Decrypt your .env
+### Decrypt your .env
 
 From your project root simply run:
 
@@ -62,7 +62,7 @@ php artisan env:decrypt --password=password
 ```
 (replace the second password password with your password)
 
-# Include password in your .env file
+### Include password in your .env file
 You can add a variable to your .env file with the variable ENV_PASSWORD. This will be removed from the encrypted version but will allow simple encoding/decoding in development with no need for password. Simply add to your .env:
 
 ```
@@ -72,7 +72,7 @@ ENV_PASSWORD=passwordHere
 
 This way you will not be prompted for a password each time you encrypt/decrypt the .env file.
 
-# Some usage suggestions
+### Some usage suggestions
 
 You may wish to have your production deployment script delete the .env.enc file from your server each time you deploy.
 
