@@ -48,6 +48,7 @@ class LaravelEnvcoderDecrypt extends Command {
         // When running from composer the prompt will not appear, so error
         if ($key === null || $key === false) {
             $this->error('Password cannot be resolved add as command option or into your .env as ENV_PASSWORD');
+            return;
         }
 
         $resolve = config('laravel-envcoder.resolve');
@@ -95,8 +96,10 @@ class LaravelEnvcoderDecrypt extends Command {
             }
         } catch (WrongKeyOrModifiedCiphertextException $e) {
             $this->error('Unable to decrypt .env file please check your password.');
+            return;
         } catch (FileNotFoundException $e) {
             $this->error('No encrypted .env file found. Try env:encrypt first.');
+            return;
         }
 
         $this->call('config:clear');
