@@ -4,6 +4,7 @@ namespace harmonic\LaravelEnvcoder\Commands;
 
 use harmonic\LaravelEnvcoder\LaravelEnvcoder;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class LaravelEnvcoderDecrypt extends Command {
     /**
@@ -36,8 +37,11 @@ class LaravelEnvcoderDecrypt extends Command {
      */
     public function handle() {
         $envcoder = new LaravelEnvcoder();
-        $key = $this->option('password');
+        $key = $envcoder->getPasswordFromEnv();
         if ($key === null) {
+            $key = $this->option('password');
+        }
+        if ($key === false || $key === null) {
             $key = $this->ask('Enter encryption key to decode .env');
         }
 
@@ -86,6 +90,8 @@ class LaravelEnvcoderDecrypt extends Command {
             }
         } catch (WrongKeyOrModifiedCiphertextException $e) {
             $this->error('Unable to decrypt .env file please check your password.');
+        } catch (FileNotFoundException $e) {
+            $this->error('No encrypted .env file found. Try env:encrypt first.');
         }
 
         $this->call('config:clear');

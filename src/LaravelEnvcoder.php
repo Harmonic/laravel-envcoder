@@ -3,6 +3,7 @@
 namespace harmonic\LaravelEnvcoder;
 
 use Defuse\Crypto\File;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class LaravelEnvcoder {
     /**
@@ -63,7 +64,7 @@ class LaravelEnvcoder {
         if (!is_file($envFile)) {
             return [];
         }
-        return parse_ini_file($envFile);
+        return parse_ini_file($envFile, false, INI_SCANNER_RAW);
     }
 
     /**
@@ -73,6 +74,10 @@ class LaravelEnvcoder {
      * @return void
      */
     public function decrypt(string $password) {
+        if (!\file_exists('.env.enc')) {
+            throw new FileNotFoundException('No encrypted env file found.');
+        }
+
         $resolve = config('laravel-envcoder.resolve');
 
         $needsPasswordAdded = false;
