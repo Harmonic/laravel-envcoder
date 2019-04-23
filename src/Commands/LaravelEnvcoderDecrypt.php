@@ -45,6 +45,11 @@ class LaravelEnvcoderDecrypt extends Command {
             $key = $this->ask('Enter encryption key to decode .env');
         }
 
+        // When running from composer the prompt will not appear, so error
+        if ($key === null || $key === false) {
+            $this->error('Password cannot be resolved add as command option or into your .env as ENV_PASSWORD');
+        }
+
         $resolve = config('laravel-envcoder.resolve');
 
         try {
