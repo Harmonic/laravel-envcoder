@@ -41,7 +41,7 @@ class LaravelEnvcoderEncrypt extends Command {
             $key = $this->option('password');
         }
         if ($key === false || $key === null) {
-            $key = $this->ask('Enter encryption key to encode .env');
+            $key = $this->password('Enter encryption key to encode .env');
         }
         $envcoder->encrypt($key);
         $this->info('.env encryption complete');

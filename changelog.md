@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-envcoder` will be documented in this file.
 
+## Version 1.0.2
+
+### Fixed
+- Halt execution on errors from commands
+- Change ask prompt to password to hide user input
+
 ## Version 1.0.1
 
 ### Fixed

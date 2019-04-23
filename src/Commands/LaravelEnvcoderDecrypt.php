@@ -42,7 +42,7 @@ class LaravelEnvcoderDecrypt extends Command {
             $key = $this->option('password');
         }
         if ($key === false || $key === null) {
-            $key = $this->ask('Enter encryption key to decode .env');
+            $key = $this->password('Enter encryption key to decode .env');
         }
 
         // When running from composer the prompt will not appear, so error
