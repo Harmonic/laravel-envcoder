@@ -29,21 +29,37 @@ class LaravelEnvcoderTest extends TestCase {
     /**
      * Create a .env file
      *
-     * @param boolean $withPassword True if the .env should include the password variable
+     * @param array $envArray Key/Value array to make into .env file
      * @return void
      */
-    private function createEnvFile(bool $withPassword = true) : void {
+    private function arrayToEnvFile(array $envArray) : void {
         $envFile = fopen('.env', 'w');
-        if ($withPassword) {
-            $envArray = $this->createEnvArrayWithPassword();
-        } else {
-            $envArray = $this->createEnvArray();
-        }
+
         foreach ($envArray as $key => $value) {
             $value = LaravelEnvcoder::formatValue($value);
             fwrite($envFile, $key . '=' . $value . "\n");
         }
         fclose($envFile);
+    }
+
+    /**
+     * Create .env file with no password inside it
+     *
+     * @return void
+     */
+    private function createEnvFile() : void {
+        $envArray = $this->createEnvArray();
+        $this->arrayToEnvFile($envArray);
+    }
+
+    /**
+     * Create env file with a password inside it
+     *
+     * @return void
+     */
+    private function createEnvFileWithPassword() : void {
+        $envArray = $this->createEnvArrayWithPassword();
+        $this->arrayToEnvFile($envArray);
     }
 
     /**
@@ -54,7 +70,7 @@ class LaravelEnvcoderTest extends TestCase {
      */
     public function canEncryptEnv() {
         // Arrange
-        $this->createEnvFile();
+        $this->createEnvFileWithPassword();
 
         // Act
         $this->artisan('env:encrypt');
@@ -82,7 +98,7 @@ class LaravelEnvcoderTest extends TestCase {
      */
     public function willAskForPassword() {
         // Arrange
-        $this->createEnvFile(false);
+        $this->createEnvFile();
 
         // Act and Assert
         $this->artisan('env:encrypt')->expectsQuestion('Enter encryption key to encode .env', 'password')->assertExitCode(0);
@@ -98,7 +114,7 @@ class LaravelEnvcoderTest extends TestCase {
      */
     public function willUseParamForPassword() {
         // Arrange
-        $this->createEnvFile(false);
+        $this->createEnvFile();
 
         // Act and Assert
         $this->artisan('env:encrypt --password=password')->assertExitCode(0);
@@ -114,7 +130,7 @@ class LaravelEnvcoderTest extends TestCase {
      */
     public function canDecryptOverwrite() {
         // Arrange
-        $this->createEnvFile(false);
+        $this->createEnvFile();
         File::encryptFileWithPassword('.env', '.env.enc', 'password');
         Config::set('laravel-envcoder.resolve', 'overwrite');
         $originalEnv = file_get_contents('.env');
@@ -136,7 +152,7 @@ class LaravelEnvcoderTest extends TestCase {
     public function canDecryptIgnore() {
         // Arrange
         Config::set('laravel-envcoder.resolve', 'ignore');
-        $this->createEnvFile(false);
+        $this->createEnvFile();
         $originalEnv = "VAR1=TEST\nVAR2=TEST2\n";
 
         $env2 = fopen('.env2', 'w');
@@ -161,7 +177,7 @@ class LaravelEnvcoderTest extends TestCase {
      */
     public function canDecryptMerge() {
         // Arrange
-        $this->createEnvFile(false);
+        $this->createEnvFile();
         Config::set('laravel-envcoder.resolve', 'merge');
 
         $env2 = fopen('.env2', 'w');
@@ -190,7 +206,7 @@ class LaravelEnvcoderTest extends TestCase {
      */
     public function canDecryptPrompt() {
         // Arrange
-        $this->createEnvFile(false);
+        $this->createEnvFile();
         Config::set('laravel-envcoder.resolve', 'prompt');
 
         $env2 = fopen('.env2', 'w');
@@ -246,7 +262,7 @@ class LaravelEnvcoderTest extends TestCase {
      */
     public function correctlyComparesEnvs() {
         // Arrange
-        $this->createEnvFile(false);
+        $this->createEnvFile();
         $this->artisan('env:encrypt --password=password');
         $env = fopen('.env', 'w');
         fwrite($env, "VAR1=CHANGED\nVAR2=TEST2\nVAR3=NEW");

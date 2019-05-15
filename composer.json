@@ -10,7 +10,7 @@
         }
     ],
     "homepage": "https://github.com/harmonic/laravel-envcoder",
-    "keywords": ["Laravel", "laravel-envcoder"],
+    "keywords": ["Laravel", "laravel-envcoder", "environment", ".env"],
     "require": {
         "illuminate/support": "~5",
         "defuse/php-encryption": "^2.2"
