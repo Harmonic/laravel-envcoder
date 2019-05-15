@@ -1,11 +1,21 @@
 <?php
 
-use Tests\TestCase;
 use Defuse\Crypto\File;
 use harmonic\LaravelEnvcoder\Facades\LaravelEnvcoder;
 use harmonic\LaravelEnvcoder\LaravelEnvcoder as LEObj;
 
 class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase {
+    /**
+     * load your package service provider
+     *
+     * @param [type] $app
+     * @return void
+     */
+    protected function getPackageProviders($app) {
+        dd($app->runningInConsole());
+        return ['harmonic\LaravelEnvcoder\LaravelEnvcoderServiceProvider'];
+    }
+
     /**
      * Create a test array of env variables
      *
