@@ -13,4 +13,17 @@ class LaravelEnvcoder extends Facade {
     protected static function getFacadeAccessor() {
         return 'LaravelEnvcoder';
     }
+
+    /**
+     * Takes a .env value and formats it correctly (double quotes, spaces etc)
+     *
+     * @param string $value The unformatted .env value
+     * @return string The formatted value
+     */
+    public static function formatValue(string $value) : string {
+        if (strpos($value, ' ') !== false) {
+            $value = '"' . $value . '"'; // Wrap values in quotes as required
+        }
+        return $value;
+    }
 }

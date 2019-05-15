@@ -2,24 +2,27 @@
 
 use Tests\TestCase;
 use Defuse\Crypto\File;
+use harmonic\LaravelEnvcoder\Facades\LaravelEnvcoder;
+use harmonic\LaravelEnvcoder\LaravelEnvcoder as LEObj;
 
 class LaravelEnvcoderTest extends TestCase {
     /**
      * Create a test array of env variables
      *
-     * @param boolean $withPassword True if should include password in env array
      * @return array
      */
-    private function createEnvArray(bool $withPassword = true) : array {
+    private function createEnvArray() : array {
         $envArray = [
             'VAR1' => 'TEST',
-            'VAR2' => 'TEST2'
+            'VAR2' => 'TEST2',
         ];
 
-        if ($withPassword) {
-            $envArray['ENV_PASSWORD'] = 'password';
-        }
+        return $envArray;
+    }
 
+    private function createEnvArrayWithPassword() : array {
+        $envArray = $this->createEnvArray();
+        $envArray['ENV_PASSWORD'] = 'password';
         return $envArray;
     }
 
@@ -31,8 +34,13 @@ class LaravelEnvcoderTest extends TestCase {
      */
     private function createEnvFile(bool $withPassword = true) : void {
         $envFile = fopen('.env', 'w');
-        $envArray = $this->createEnvArray($withPassword);
+        if ($withPassword) {
+            $envArray = $this->createEnvArrayWithPassword();
+        } else {
+            $envArray = $this->createEnvArray();
+        }
         foreach ($envArray as $key => $value) {
+            $value = LaravelEnvcoder::formatValue($value);
             fwrite($envFile, $key . '=' . $value . "\n");
         }
         fclose($envFile);
@@ -127,8 +135,8 @@ class LaravelEnvcoderTest extends TestCase {
      */
     public function canDecryptIgnore() {
         // Arrange
-        $this->createEnvFile(false);
         Config::set('laravel-envcoder.resolve', 'ignore');
+        $this->createEnvFile(false);
         $originalEnv = "VAR1=TEST\nVAR2=TEST2\n";
 
         $env2 = fopen('.env2', 'w');
@@ -206,5 +214,54 @@ class LaravelEnvcoderTest extends TestCase {
         unlink('.env');
         unlink('.env.enc');
         unlink('.env2');
+    }
+
+    /**
+     * Test long values with spaces are correctly enc and decrypted
+     *
+     * @test
+     * @return void
+     */
+    public function handlesLongValues() {
+        // Arrange
+        $env = fopen('.env', 'w');
+        fwrite($env, "LONGVAR=\"This is a long var\"\nSHORTVAR=TEST4\n");
+        fclose($env);
+        File::encryptFileWithPassword('.env', '.env.enc', 'password');
+
+        $this->artisan('env:decrypt --password=password')->assertExitCode(0);
+
+        // Assert
+        $this->assertEquals("LONGVAR=\"This is a long var\"\nSHORTVAR=TEST4\n", file_get_contents('.env'));
+
+        unlink('.env');
+        unlink('.env.enc');
+    }
+
+    /**
+     * Test comparison command
+     *
+     * @test
+     * @return void
+     */
+    public function correctlyComparesEnvs() {
+        // Arrange
+        $this->createEnvFile(false);
+        $this->artisan('env:encrypt --password=password');
+        $env = fopen('.env', 'w');
+        fwrite($env, "VAR1=CHANGED\nVAR2=TEST2\nVAR3=NEW");
+        fclose($env);
+
+        // Act
+        $envcoder = new LEObj();
+        $differences = $envcoder->compare('password');
+
+        // Assert
+        $this->assertEquals('CHANGED', $differences['VAR1']);
+        $this->assertEquals('NEW', $differences['VAR3']);
+        $this->artisan('env:compare --password=password')->assertExitCode(0);
+
+        unlink('.env');
+        unlink('.env.enc');
     }
 }

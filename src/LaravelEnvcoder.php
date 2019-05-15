@@ -2,8 +2,9 @@
 
 namespace harmonic\LaravelEnvcoder;
 
-use Defuse\Crypto\File;
+use harmonic\LaravelEnvcoder\Facades\LaravelEnvcoder as LEFacade;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Defuse\Crypto\File;
 
 class LaravelEnvcoder {
     /**
@@ -27,7 +28,6 @@ class LaravelEnvcoder {
      * @return void
      */
     public function encrypt(string $password) : void {
-        //TODO: Need to handle ENV_PASSWORD - remove from .env, then put back
         $needsPasswordAdded = false;
         if ($this->getPasswordFromEnv() !== null) {
             $contents = file_get_contents('.env');
@@ -60,7 +60,7 @@ class LaravelEnvcoder {
      * @param string $env
      * @return array
      */
-    private function envToArray(string $envFile) : array {
+    public function envToArray(string $envFile) : array {
         if (!is_file($envFile)) {
             return [];
         }
@@ -74,6 +74,7 @@ class LaravelEnvcoder {
      * @return void
      */
     public function decrypt(string $password) {
+        //TODO: Issue where ENV_PASSWORD is added multiple times on decrypt
         if (!\file_exists('.env.enc')) {
             throw new FileNotFoundException('No encrypted env file found.');
         }
@@ -116,6 +117,7 @@ class LaravelEnvcoder {
                 $mergedArray = array_merge($currentEnv, $decryptedArray);
                 $envFile = fopen('.env', 'w');
                 foreach ($mergedArray as $key => $value) {
+                    $value = LEFacade::formatValue($value);
                     fwrite($envFile, $key . '=' . $value . "\n");
                 }
                 fclose($envFile);
@@ -132,5 +134,31 @@ class LaravelEnvcoder {
             default:
                 throw new \Exception('Invalid decryption conflict resolution, check your config file.');
         }
+    }
+
+    /**
+     * Compare what is in the encoded file vs current .env
+     *
+     * @param string $password The password to decrypt the file
+     * @return array $differences The elements that are different in the two env files
+     *
+     * @throws WrongKeyOrModifiedCiphertextException
+     * @throws FileNotFoundException
+     */
+    public function compare(string $password) : array {
+        if (!\file_exists('.env.enc')) {
+            throw new FileNotFoundException('No encrypted env file found.');
+        }
+
+        File::decryptFileWithPassword('.env.enc', '.env.bak', $password);
+
+        $decryptedArray = $this->envToArray('.env.bak');
+        $currentEnv = $this->envToArray('.env');
+
+        $differences = array_diff_assoc($currentEnv, $decryptedArray);
+
+        unlink('.env.bak');
+
+        return $differences;
     }
 }

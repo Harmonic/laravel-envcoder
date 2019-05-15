@@ -4,6 +4,7 @@ namespace harmonic\LaravelEnvcoder;
 
 use harmonic\LaravelEnvcoder\Commands\LaravelEnvcoderEncrypt;
 use harmonic\LaravelEnvcoder\Commands\LaravelEnvcoderDecrypt;
+use harmonic\LaravelEnvcoder\Commands\LaravelEnvcoderCompare;
 use Illuminate\Support\ServiceProvider;
 
 class LaravelEnvcoderServiceProvider extends ServiceProvider {
@@ -30,6 +31,7 @@ class LaravelEnvcoderServiceProvider extends ServiceProvider {
      * @return void
      */
     public function register() {
+        //TODO: Config is not copying when published
         $this->mergeConfigFrom(__DIR__ . '/../config/laravel-envcoder.php', 'laravel-envcoder');
 
         // Register the service the package provides.
@@ -56,7 +58,7 @@ class LaravelEnvcoderServiceProvider extends ServiceProvider {
         // Publishing the configuration file.
         $this->publishes([
             __DIR__ . '/../config/laravel-envcoder.php' => config_path('laravel-envcoder.php'),
-        ], 'laravel-envcoder.config');
+        ], 'laravel-envcoder.config'); //TODO: This isn't copying to config folder!
 
         // Publishing the views.
         /*$this->publishes([
@@ -77,6 +79,7 @@ class LaravelEnvcoderServiceProvider extends ServiceProvider {
         $this->commands([
             LaravelEnvcoderEncrypt::class,
             LaravelEnvcoderDecrypt::class,
+            LaravelEnvcoderCompare::class,
         ]);
     }
 }

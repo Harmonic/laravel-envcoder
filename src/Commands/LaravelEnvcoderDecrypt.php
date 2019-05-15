@@ -3,10 +3,10 @@
 namespace harmonic\LaravelEnvcoder\Commands;
 
 use harmonic\LaravelEnvcoder\LaravelEnvcoder;
-use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use harmonic\LaravelEnvcoder\Facades\LaravelEnvcoder as LEFacade;
 
-class LaravelEnvcoderDecrypt extends Command {
+class LaravelEnvcoderDecrypt extends \harmonic\LaravelEnvcoder\LaravelEnvcoderBaseCommand {
     /**
      * The name and signature of the console command.
      *
@@ -36,21 +36,8 @@ class LaravelEnvcoderDecrypt extends Command {
      * @return mixed
      */
     public function handle() {
+        $key = $this->getPassword();
         $envcoder = new LaravelEnvcoder();
-        $key = $envcoder->getPasswordFromEnv();
-        if ($key === null) {
-            $key = $this->option('password');
-        }
-        if ($key === false || $key === null) {
-            $key = $this->password('Enter encryption key to decode .env');
-        }
-
-        // When running from composer the prompt will not appear, so error
-        if ($key === null || $key === false) {
-            $this->error('Password cannot be resolved add as command option or into your .env as ENV_PASSWORD');
-            return;
-        }
-
         $resolve = config('laravel-envcoder.resolve');
 
         try {
@@ -67,6 +54,7 @@ class LaravelEnvcoderDecrypt extends Command {
                         if (array_key_exists($key, $result['current']) && $value !== $result['current'][$key]) {
                             $use = $this->choice('Env variable ' . $key . ' has encrypted value (E) ' . $value . ' vs unencrypted value (U) ' . $result['current'][$key], ['E', 'U'], 0);
                             if ($use === 'E') {
+                                $value = LEFacade::formatValue($value);
                                 fwrite($envFile, $key . '=' . $value . "\n");
                                 continue;
                             }
@@ -84,6 +72,7 @@ class LaravelEnvcoderDecrypt extends Command {
                         if ($use === 'S') {
                             continue;
                         }
+                        $value = LEFacade::formatValue($value);
                         fwrite($envFile, $key . '=' . $value . "\n");
                     }
 
