@@ -63,6 +63,7 @@ php artisan env:decrypt --password=password
 ```
 (replace the second password with your password)
 
+<<<<<<< HEAD
 ### Compare .env.enc with .env (Diff)
 
 You can review any changes between your current .env and the encrypted one:
@@ -72,6 +73,8 @@ php artisan env:compare --password=password
 ```
 (replace the second password with your password)
 
+=======
+>>>>>>> 01a71c0fd7138293550aa21a2e977ca982399f21
 ### Include password in your .env file
 You can add a variable to your .env file with the variable ENV_PASSWORD. This will be removed from the encrypted version but will allow simple encoding/decoding in development with no need for password. Simply add to your .env:
 
