@@ -112,6 +112,9 @@ class LaravelEnvcoder {
             case ('merge'):
                 File::decryptFileWithPassword('.env.enc', '.env.bak', $password);
                 $decryptedArray = $this->envToArray('.env.bak');
+                if ($needsPasswordAdded) {
+                    $decryptedArray['ENV_PASSWORD'] = $password;
+                }
                 $currentEnv = $this->envToArray('.env');
                 $mergedArray = array_merge($currentEnv, $decryptedArray);
                 $envFile = fopen('.env', 'w');
@@ -122,7 +125,7 @@ class LaravelEnvcoder {
                 fclose($envFile);
                 unlink('.env.bak');
 
-                if (sizeof($mergedArray > $decryptedArray)) {
+                if (sizeof($mergedArray) > sizeof($decryptedArray)) {
                     return true; // let the calling function know something was merged and they potentially need to encrypt to sync
                 }
                 return;

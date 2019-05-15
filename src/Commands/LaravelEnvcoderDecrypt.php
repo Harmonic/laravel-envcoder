@@ -45,7 +45,7 @@ class LaravelEnvcoderDecrypt extends \harmonic\LaravelEnvcoder\LaravelEnvcoderBa
 
             if ($resolve === 'merge') {
                 if ($result) {
-                    $this->info('There were items in your .env not in env.enc, suggest you run php artisan env:encrypt');
+                    $this->info('There were items in your .env not in env.enc, suggest you run php artisan env:compare and/or env:encrypt to update .env.enc');
                 }
             } elseif ($resolve == 'prompt') {
                 if (is_array($result)) {

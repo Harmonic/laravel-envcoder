@@ -6,6 +6,9 @@ All notable changes to `laravel-envcoder` will be documented in this file.
 
 ### Added
 - env:compare command to show differences between .env and .env.enc
+
+### Modified
+- Using regex to find/replace ENV_PASSWORD variable
 - Password prompt on decode is now secret
 
 ### Fixed
