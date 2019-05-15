@@ -31,9 +31,7 @@ class LaravelEnvcoder {
         $needsPasswordAdded = false;
         if ($this->getPasswordFromEnv() !== null) {
             $contents = file_get_contents('.env');
-            //TODO: There will be a better way to do this
-            $contents = str_replace('ENV_PASSWORD=' . $password . PHP_EOL, '', $contents);
-            $contents = str_replace('ENV_PASSWORD=' . $password, '', $contents);
+            $contents = preg_replace('/ENV_PASSWORD=' . $password . '\R?/', '', $contents);
             file_put_contents('.env', $contents);
             $needsPasswordAdded = true;
         }
