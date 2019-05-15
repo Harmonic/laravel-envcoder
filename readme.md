@@ -16,6 +16,7 @@ Some highlights of the package include:
 * Can be configured to overwrite, merge, or interactively decide how to deal with merge conflicts within your .env
 * Does not require any changes to your project to retrieve .env variables
 * Simply edit your .env files as normal (and encrypt them when you are ready to share)
+* Compare your encrypted .env with the current one and see whats differences
 
 ## Installation
 
@@ -32,7 +33,7 @@ php artisan vendor:publish --provider="harmonic\LaravelEnvcoder"
 
 ## Usage
 
-# Encypting your .env
+### Encypting your .env
 
 From your project root simply run:
 
@@ -47,7 +48,7 @@ php artisan env:encrypt --password=password
 ```
 (replace password with your password)
 
-# Decrypt your .env
+### Decrypt your .env
 
 From your project root simply run:
 
@@ -60,9 +61,18 @@ You will be prompted for a password, if you prefer to enter it from the command 
 ``` bash
 php artisan env:decrypt --password=password
 ```
-(replace the second password password with your password)
+(replace the second password with your password)
 
-# Include password in your .env file
+### Compare .env.enc with .env (Diff)
+
+You can review any changes between your current .env and the encrypted one:
+
+``` bash
+php artisan env:compare --password=password
+```
+(replace the second password with your password)
+
+### Include password in your .env file
 You can add a variable to your .env file with the variable ENV_PASSWORD. This will be removed from the encrypted version but will allow simple encoding/decoding in development with no need for password. Simply add to your .env:
 
 ```
@@ -72,7 +82,7 @@ ENV_PASSWORD=passwordHere
 
 This way you will not be prompted for a password each time you encrypt/decrypt the .env file.
 
-# Some usage suggestions
+### Some usage suggestions
 
 You may wish to have your production deployment script delete the .env.enc file from your server each time you deploy.
 

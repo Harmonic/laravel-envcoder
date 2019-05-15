@@ -43,6 +43,7 @@ class LaravelEnvcoderDecrypt extends \harmonic\LaravelEnvcoder\LaravelEnvcoderBa
         try {
             $result = $envcoder->decrypt($key);
 
+            //TODO: There is an issue with encoding and then decoding from scratch where this message is displayed -write a test
             if ($resolve === 'merge') {
                 if ($result) {
                     $this->info('There were items in your .env not in env.enc, suggest you run php artisan env:encrypt');

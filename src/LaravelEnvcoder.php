@@ -31,7 +31,9 @@ class LaravelEnvcoder {
         $needsPasswordAdded = false;
         if ($this->getPasswordFromEnv() !== null) {
             $contents = file_get_contents('.env');
+            //TODO: There will be a better way to do this
             $contents = str_replace('ENV_PASSWORD=' . $password . "\n", '', $contents);
+            $contents = str_replace('ENV_PASSWORD=' . $password, '', $contents);
             file_put_contents('.env', $contents);
             $needsPasswordAdded = true;
         }
@@ -74,7 +76,6 @@ class LaravelEnvcoder {
      * @return void
      */
     public function decrypt(string $password) {
-        //TODO: Issue where ENV_PASSWORD is added multiple times on decrypt
         if (!\file_exists('.env.enc')) {
             throw new FileNotFoundException('No encrypted env file found.');
         }
@@ -102,6 +103,7 @@ class LaravelEnvcoder {
 
                 unlink('.env.bak');
 
+                //TODO: Won't we be prompted about this? TEST
                 if ($needsPasswordAdded) {
                     $currentEnv['ENV_PASSWORD'] = $password;
                 }
@@ -122,10 +124,6 @@ class LaravelEnvcoder {
                 }
                 fclose($envFile);
                 unlink('.env.bak');
-
-                if ($needsPasswordAdded) {
-                    $this->addPasswordToEnv($password);
-                }
 
                 if (sizeof($mergedArray > $decryptedArray)) {
                     return true; // let the calling function know something was merged and they potentially need to encrypt to sync

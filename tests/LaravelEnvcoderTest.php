@@ -264,4 +264,6 @@ class LaravelEnvcoderTest extends TestCase {
         unlink('.env');
         unlink('.env.enc');
     }
+
+    //TODO: Add a test that ENV_PASSWORD is added/removed correctly through all encrypt methods
 }

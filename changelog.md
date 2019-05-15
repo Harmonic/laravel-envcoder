@@ -6,12 +6,14 @@ All notable changes to `laravel-envcoder` will be documented in this file.
 
 ### Added
 - env:compare command to show differences between .env and .env.enc
+- Password prompt on decode is now secret
 
 ### Fixed
 - Halt execution on errors from commands
 - Change ask prompt to password to hide user input
 - Allowed use of "" in env values
 - Wrap strings containing spaces with "'s
+- Fixed multiple issues with ENV_PASSWORD being duplicated on encrypt/decrypted
 
 ## Version 1.0.1
 
