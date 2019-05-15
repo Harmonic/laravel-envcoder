@@ -1,11 +1,21 @@
 language: php
-install:
-    composer install
 php:
   - 7.1
   - 7.2
   - 7.3
   - hhvm
+cache:
+  directories:
+    - $HOME/.cache/pip
+    - $HOME/.composer/cache/files
+before_install:
+  - echo "memory_limit=2G" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - composer global require hirak/prestissimo --update-no-dev
+  - composer require "illuminate/support:${ILLUMINATE_VERSION}" --no-update --prefer-dist
+  - composer require "orchestra/testbench:${ILLUMINATE_VERSION/5\./3\.}" --no-update --prefer-dist
+  - composer require "phpunit/phpunit:${PHPUNIT_VERSION}" --no-update --prefer-dist
+install:
+    travis_retry composer install --no-interaction --prefer-dist
 script:
   - mkdir -p build/logs
   - php vendor/bin/phpunit -c phpunit.xml

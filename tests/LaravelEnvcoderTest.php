@@ -5,7 +5,7 @@ use Defuse\Crypto\File;
 use harmonic\LaravelEnvcoder\Facades\LaravelEnvcoder;
 use harmonic\LaravelEnvcoder\LaravelEnvcoder as LEObj;
 
-class LaravelEnvcoderTest extends TestCase {
+class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase {
     /**
      * Create a test array of env variables
      *
