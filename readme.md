@@ -63,7 +63,6 @@ php artisan env:decrypt --password=password
 ```
 (replace the second password with your password)
 
-<<<<<<< HEAD
 ### Compare .env.enc with .env (Diff)
 
 You can review any changes between your current .env and the encrypted one:
@@ -73,8 +72,6 @@ php artisan env:compare --password=password
 ```
 (replace the second password with your password)
 
-=======
->>>>>>> 01a71c0fd7138293550aa21a2e977ca982399f21
 ### Include password in your .env file
 You can add a variable to your .env file with the variable ENV_PASSWORD. This will be removed from the encrypted version but will allow simple encoding/decoding in development with no need for password. Simply add to your .env:
 
@@ -142,11 +139,11 @@ MIT. Please see the [license file](license.md) for more information.
 [ico-version]: https://img.shields.io/packagist/v/harmonic/laravel-envcoder.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/harmonic/laravel-envcoder.svg?style=flat-square
 [ico-travis]: https://img.shields.io/travis/harmonic/laravel-envcoder/master.svg?style=flat-square
-[ico-styleci]: https://styleci.io/repos/12345678/shield
+[ico-styleci]: https://styleci.io/repos/182541287/shield
 
 [link-packagist]: https://packagist.org/packages/harmonic/laravel-envcoder
 [link-downloads]: https://packagist.org/packages/harmonic/laravel-envcoder
 [link-travis]: https://travis-ci.org/harmonic/laravel-envcoder
-[link-styleci]: https://styleci.io/repos/12345678
+[link-styleci]: https://styleci.io/repos/182541287
 [link-author]: https://github.com/harmonic
 [link-contributors]: ../../contributors

@@ -51,7 +51,6 @@ matrix:
       env: ILLUMINATE_VERSION=5.3.* PHPUNIT_VERSION=~5.0
 before_install:
   - echo "memory_limit=2G" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-  - composer global require hirak/prestissimo --update-no-dev
   - composer require "illuminate/support:${ILLUMINATE_VERSION}" --no-update --prefer-dist
   - composer require "orchestra/testbench:${ILLUMINATE_VERSION/5\./3\.}" --no-update --prefer-dist
   - composer require "phpunit/phpunit:${PHPUNIT_VERSION}" --no-update --prefer-dist
