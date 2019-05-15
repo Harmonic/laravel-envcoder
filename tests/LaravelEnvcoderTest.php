@@ -12,8 +12,17 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase {
      * @return void
      */
     protected function getPackageProviders($app) {
-        dd($app->runningInConsole());
         return ['harmonic\LaravelEnvcoder\LaravelEnvcoderServiceProvider'];
+    }
+
+    /**
+     * Resolve application Console Kernel implementation.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     * @return void
+     */
+    protected function resolveApplicationConsoleKernel($app) {
+        $app->singleton('Illuminate\Contracts\Console\Kernel', 'Orchestra\Testbench\Console\Kernel');
     }
 
     /**
