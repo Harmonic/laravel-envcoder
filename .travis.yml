@@ -1,0 +1,11 @@
+language: php
+install:
+    composer install
+php:
+  - 7.1
+  - 7.2
+  - 7.3
+  - hhvm
+script:
+  - mkdir -p build/logs
+  - php vendor/bin/phpunit -c phpunit.xml
