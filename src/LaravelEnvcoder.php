@@ -32,7 +32,7 @@ class LaravelEnvcoder {
         if ($this->getPasswordFromEnv() !== null) {
             $contents = file_get_contents('.env');
             //TODO: There will be a better way to do this
-            $contents = str_replace('ENV_PASSWORD=' . $password . "\n", '', $contents);
+            $contents = str_replace('ENV_PASSWORD=' . $password . PHP_EOL, '', $contents);
             $contents = str_replace('ENV_PASSWORD=' . $password, '', $contents);
             file_put_contents('.env', $contents);
             $needsPasswordAdded = true;
@@ -52,7 +52,7 @@ class LaravelEnvcoder {
      */
     private function addPasswordToEnv(string $password) {
         $handle = fopen('.env', 'a');
-        fwrite($handle, 'ENV_PASSWORD=' . $password . "\n");
+        fwrite($handle, 'ENV_PASSWORD=' . $password . PHP_EOL);
         fclose($handle);
     }
 
@@ -103,7 +103,6 @@ class LaravelEnvcoder {
 
                 unlink('.env.bak');
 
-                //TODO: Won't we be prompted about this? TEST
                 if ($needsPasswordAdded) {
                     $currentEnv['ENV_PASSWORD'] = $password;
                 }
@@ -120,7 +119,7 @@ class LaravelEnvcoder {
                 $envFile = fopen('.env', 'w');
                 foreach ($mergedArray as $key => $value) {
                     $value = LEFacade::formatValue($value);
-                    fwrite($envFile, $key . '=' . $value . "\n");
+                    fwrite($envFile, $key . '=' . $value . PHP_EOL);
                 }
                 fclose($envFile);
                 unlink('.env.bak');

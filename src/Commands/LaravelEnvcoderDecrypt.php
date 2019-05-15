@@ -43,7 +43,6 @@ class LaravelEnvcoderDecrypt extends \harmonic\LaravelEnvcoder\LaravelEnvcoderBa
         try {
             $result = $envcoder->decrypt($key);
 
-            //TODO: There is an issue with encoding and then decoding from scratch where this message is displayed -write a test
             if ($resolve === 'merge') {
                 if ($result) {
                     $this->info('There were items in your .env not in env.enc, suggest you run php artisan env:encrypt');
@@ -56,7 +55,7 @@ class LaravelEnvcoderDecrypt extends \harmonic\LaravelEnvcoder\LaravelEnvcoderBa
                             $use = $this->choice('Env variable ' . $key . ' has encrypted value (E) ' . $value . ' vs unencrypted value (U) ' . $result['current'][$key], ['E', 'U'], 0);
                             if ($use === 'E') {
                                 $value = LEFacade::formatValue($value);
-                                fwrite($envFile, $key . '=' . $value . "\n");
+                                fwrite($envFile, $key . '=' . $value . PHP_EOL);
                                 continue;
                             }
                         } elseif (!array_key_exists($key, $result['current'])) {
@@ -65,7 +64,7 @@ class LaravelEnvcoderDecrypt extends \harmonic\LaravelEnvcoder\LaravelEnvcoderBa
                                 continue;
                             }
                         }
-                        fwrite($envFile, $key . '=' . $result['decrypted'][$key] . "\n");
+                        fwrite($envFile, $key . '=' . $result['decrypted'][$key] . PHP_EOL);
                     }
                     $varsNotYetAdded = array_diff_key($result['current'], $result['decrypted']);
                     foreach ($varsNotYetAdded as $key => $value) {
@@ -74,7 +73,7 @@ class LaravelEnvcoderDecrypt extends \harmonic\LaravelEnvcoder\LaravelEnvcoderBa
                             continue;
                         }
                         $value = LEFacade::formatValue($value);
-                        fwrite($envFile, $key . '=' . $value . "\n");
+                        fwrite($envFile, $key . '=' . $value . PHP_EOL);
                     }
 
                     fclose($envFile);

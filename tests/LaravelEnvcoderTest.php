@@ -37,7 +37,7 @@ class LaravelEnvcoderTest extends TestCase {
 
         foreach ($envArray as $key => $value) {
             $value = LaravelEnvcoder::formatValue($value);
-            fwrite($envFile, $key . '=' . $value . "\n");
+            fwrite($envFile, $key . '=' . $value . PHP_EOL);
         }
         fclose($envFile);
     }
@@ -78,7 +78,7 @@ class LaravelEnvcoderTest extends TestCase {
 
         // Add the ENV_PASSWORD to .env.decrypted to fake it
         $handle = fopen('.env.decrypted', 'a');
-        fwrite($handle, "ENV_PASSWORD=password\n");
+        fwrite($handle, 'ENV_PASSWORD=password' . PHP_EOL);
         fclose($handle);
 
         // Assert
@@ -107,7 +107,7 @@ class LaravelEnvcoderTest extends TestCase {
     }
 
     /**
-     * Can use password option and prompt for password
+     * Can use password as a param
      *
      * @test
      * @return void
@@ -153,10 +153,10 @@ class LaravelEnvcoderTest extends TestCase {
         // Arrange
         Config::set('laravel-envcoder.resolve', 'ignore');
         $this->createEnvFile();
-        $originalEnv = "VAR1=TEST\nVAR2=TEST2\n";
+        $originalEnv = 'VAR1=TEST' . PHP_EOL . 'VAR2=TEST2' . PHP_EOL;
 
         $env2 = fopen('.env2', 'w');
-        fwrite($env2, "VAR3=TEST3\nVAR4=TEST4\n");
+        fwrite($env2, 'VAR3=TEST3' . PHP_EOL . 'VAR4=TEST4' . PHP_EOL);
         fclose($env2);
         File::encryptFileWithPassword('.env2', '.env.enc', 'password');
 
@@ -181,11 +181,11 @@ class LaravelEnvcoderTest extends TestCase {
         Config::set('laravel-envcoder.resolve', 'merge');
 
         $env2 = fopen('.env2', 'w');
-        fwrite($env2, "VAR3=TEST3\nVAR4=TEST4\n");
+        fwrite($env2, 'VAR3=TEST3' . PHP_EOL . 'VAR4=TEST4' . PHP_EOL);
         fclose($env2);
         File::encryptFileWithPassword('.env2', '.env.enc', 'password');
 
-        $finalFile = "VAR1=TEST\nVAR2=TEST2\nVAR3=TEST3\nVAR4=TEST4\n";
+        $finalFile = 'VAR1=TEST' . PHP_EOL . 'VAR2=TEST2' . PHP_EOL . 'VAR3=TEST3' . PHP_EOL . 'VAR4=TEST4' . PHP_EOL;
 
         // Act
         $this->artisan('env:decrypt --password=password')->assertExitCode(0);
@@ -206,15 +206,15 @@ class LaravelEnvcoderTest extends TestCase {
      */
     public function canDecryptPrompt() {
         // Arrange
-        $this->createEnvFile();
+        $this->createEnvFileWithPassword();
         Config::set('laravel-envcoder.resolve', 'prompt');
 
         $env2 = fopen('.env2', 'w');
-        fwrite($env2, "VAR1=TEST3\nVAR3=TEST4\n");
+        fwrite($env2, 'VAR1=TEST3' . PHP_EOL . 'VAR3=TEST4' . PHP_EOL . 'ENV_PASSWORD=password');
         fclose($env2);
         File::encryptFileWithPassword('.env2', '.env.enc', 'password');
 
-        $finalFile = "VAR1=TEST3\nVAR3=TEST4\nVAR2=TEST2\n"; // use encrypted, add 3
+        $finalFile = 'VAR1=TEST3' . PHP_EOL . 'VAR3=TEST4' . PHP_EOL . 'VAR2=TEST2' . PHP_EOL . 'ENV_PASSWORD=password' . PHP_EOL; // use encrypted, add 3
 
         // Act
         $this->artisan('env:decrypt --password=password')
@@ -241,14 +241,14 @@ class LaravelEnvcoderTest extends TestCase {
     public function handlesLongValues() {
         // Arrange
         $env = fopen('.env', 'w');
-        fwrite($env, "LONGVAR=\"This is a long var\"\nSHORTVAR=TEST4\n");
+        fwrite($env, 'LONGVAR="This is a long var"' . PHP_EOL . 'SHORTVAR=TEST4' . PHP_EOL);
         fclose($env);
         File::encryptFileWithPassword('.env', '.env.enc', 'password');
 
         $this->artisan('env:decrypt --password=password')->assertExitCode(0);
 
         // Assert
-        $this->assertEquals("LONGVAR=\"This is a long var\"\nSHORTVAR=TEST4\n", file_get_contents('.env'));
+        $this->assertEquals('LONGVAR="This is a long var"' . PHP_EOL . 'SHORTVAR=TEST4' . PHP_EOL, file_get_contents('.env'));
 
         unlink('.env');
         unlink('.env.enc');
@@ -265,7 +265,7 @@ class LaravelEnvcoderTest extends TestCase {
         $this->createEnvFile();
         $this->artisan('env:encrypt --password=password');
         $env = fopen('.env', 'w');
-        fwrite($env, "VAR1=CHANGED\nVAR2=TEST2\nVAR3=NEW");
+        fwrite($env, 'VAR1=CHANGED' . PHP_EOL . 'VAR2=TEST2' . PHP_EOL . 'VAR3=NEW');
         fclose($env);
 
         // Act
@@ -280,6 +280,4 @@ class LaravelEnvcoderTest extends TestCase {
         unlink('.env');
         unlink('.env.enc');
     }
-
-    //TODO: Add a test that ENV_PASSWORD is added/removed correctly through all encrypt methods
 }
