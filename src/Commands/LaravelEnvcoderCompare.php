@@ -13,7 +13,7 @@ class LaravelEnvcoderCompare extends \harmonic\LaravelEnvcoder\LaravelEnvcoderBa
      *
      * @var string
      */
-    protected $signature = 'env:compare {--password=}';
+    protected $signature = 'env:compare {--password=}'; //TODO: Alias to env:diff
 
     /**
      * The console command description.
