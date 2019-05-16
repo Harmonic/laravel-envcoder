@@ -4,14 +4,16 @@ use Defuse\Crypto\File;
 use harmonic\LaravelEnvcoder\Facades\LaravelEnvcoder;
 use harmonic\LaravelEnvcoder\LaravelEnvcoder as LEObj;
 
-class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase {
+class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase
+{
     /**
-     * load your package service provider
+     * load your package service provider.
      *
      * @param [type] $app
      * @return void
      */
-    protected function getPackageProviders($app) {
+    protected function getPackageProviders($app)
+    {
         return ['harmonic\LaravelEnvcoder\LaravelEnvcoderServiceProvider'];
     }
 
@@ -21,16 +23,18 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase {
      * @param  \Illuminate\Foundation\Application  $app
      * @return void
      */
-    protected function resolveApplicationConsoleKernel($app) {
+    protected function resolveApplicationConsoleKernel($app)
+    {
         $app->singleton('Illuminate\Contracts\Console\Kernel', 'Orchestra\Testbench\Console\Kernel');
     }
 
     /**
-     * Create a test array of env variables
+     * Create a test array of env variables.
      *
      * @return array
      */
-    private function createEnvArray() : array {
+    private function createEnvArray() : array
+    {
         $envArray = [
             'VAR1' => 'TEST',
             'VAR2' => 'TEST2',
@@ -39,55 +43,61 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase {
         return $envArray;
     }
 
-    private function createEnvArrayWithPassword() : array {
+    private function createEnvArrayWithPassword() : array
+    {
         $envArray = $this->createEnvArray();
         $envArray['ENV_PASSWORD'] = 'password';
+
         return $envArray;
     }
 
     /**
-     * Create a .env file
+     * Create a .env file.
      *
      * @param array $envArray Key/Value array to make into .env file
      * @return void
      */
-    private function arrayToEnvFile(array $envArray) : void {
+    private function arrayToEnvFile(array $envArray) : void
+    {
         $envFile = fopen('.env', 'w');
 
         foreach ($envArray as $key => $value) {
             $value = LaravelEnvcoder::formatValue($value);
-            fwrite($envFile, $key . '=' . $value . PHP_EOL);
+            fwrite($envFile, $key.'='.$value.PHP_EOL);
         }
         fclose($envFile);
     }
 
     /**
-     * Create .env file with no password inside it
+     * Create .env file with no password inside it.
      *
      * @return void
      */
-    private function createEnvFile() : void {
+    private function createEnvFile() : void
+    {
         $envArray = $this->createEnvArray();
         $this->arrayToEnvFile($envArray);
     }
 
     /**
-     * Create env file with a password inside it
+     * Create env file with a password inside it.
      *
      * @return void
      */
-    private function createEnvFileWithPassword() : void {
+    private function createEnvFileWithPassword() : void
+    {
         $envArray = $this->createEnvArrayWithPassword();
         $this->arrayToEnvFile($envArray);
     }
 
     /**
-     * Test Description
+     * Test Description.
      *
      * @test
      * @return void
      */
-    public function canEncryptEnv() {
+    public function canEncryptEnv()
+    {
         // Arrange
         $this->createEnvFileWithPassword();
 
@@ -97,7 +107,7 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase {
 
         // Add the ENV_PASSWORD to .env.decrypted to fake it
         $handle = fopen('.env.decrypted', 'a');
-        fwrite($handle, 'ENV_PASSWORD=password' . PHP_EOL);
+        fwrite($handle, 'ENV_PASSWORD=password'.PHP_EOL);
         fclose($handle);
 
         // Assert
@@ -110,12 +120,13 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase {
     }
 
     /**
-     * Can use password option and prompt for password
+     * Can use password option and prompt for password.
      *
      * @test
      * @return void
      */
-    public function willAskForPassword() {
+    public function willAskForPassword()
+    {
         // Arrange
         $this->createEnvFile();
 
@@ -126,12 +137,13 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase {
     }
 
     /**
-     * Can use password as a param
+     * Can use password as a param.
      *
      * @test
      * @return void
      */
-    public function willUseParamForPassword() {
+    public function willUseParamForPassword()
+    {
         // Arrange
         $this->createEnvFile();
 
@@ -142,12 +154,13 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase {
     }
 
     /**
-     * Test decryption method with overwrite
+     * Test decryption method with overwrite.
      *
      * @test
      * @return void
      */
-    public function canDecryptOverwrite() {
+    public function canDecryptOverwrite()
+    {
         // Arrange
         $this->createEnvFile();
         File::encryptFileWithPassword('.env', '.env.enc', 'password');
@@ -163,19 +176,20 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase {
     }
 
     /**
-     * Test decryption method with ignore
+     * Test decryption method with ignore.
      *
      * @test
      * @return void
      */
-    public function canDecryptIgnore() {
+    public function canDecryptIgnore()
+    {
         // Arrange
         Config::set('laravel-envcoder.resolve', 'ignore');
         $this->createEnvFile();
-        $originalEnv = 'VAR1=TEST' . PHP_EOL . 'VAR2=TEST2' . PHP_EOL;
+        $originalEnv = 'VAR1=TEST'.PHP_EOL.'VAR2=TEST2'.PHP_EOL;
 
         $env2 = fopen('.env2', 'w');
-        fwrite($env2, 'VAR3=TEST3' . PHP_EOL . 'VAR4=TEST4' . PHP_EOL);
+        fwrite($env2, 'VAR3=TEST3'.PHP_EOL.'VAR4=TEST4'.PHP_EOL);
         fclose($env2);
         File::encryptFileWithPassword('.env2', '.env.enc', 'password');
 
@@ -189,22 +203,23 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase {
     }
 
     /**
-     * Test decryption method with merge
+     * Test decryption method with merge.
      *
      * @test
      * @return void
      */
-    public function canDecryptMerge() {
+    public function canDecryptMerge()
+    {
         // Arrange
         $this->createEnvFile();
         Config::set('laravel-envcoder.resolve', 'merge');
 
         $env2 = fopen('.env2', 'w');
-        fwrite($env2, 'VAR3=TEST3' . PHP_EOL . 'VAR4=TEST4' . PHP_EOL);
+        fwrite($env2, 'VAR3=TEST3'.PHP_EOL.'VAR4=TEST4'.PHP_EOL);
         fclose($env2);
         File::encryptFileWithPassword('.env2', '.env.enc', 'password');
 
-        $finalFile = 'VAR1=TEST' . PHP_EOL . 'VAR2=TEST2' . PHP_EOL . 'VAR3=TEST3' . PHP_EOL . 'VAR4=TEST4' . PHP_EOL;
+        $finalFile = 'VAR1=TEST'.PHP_EOL.'VAR2=TEST2'.PHP_EOL.'VAR3=TEST3'.PHP_EOL.'VAR4=TEST4'.PHP_EOL;
 
         // Act
         $this->artisan('env:decrypt --password=password')->assertExitCode(0);
@@ -218,22 +233,23 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase {
     }
 
     /**
-     * Test decryption method with prompt
+     * Test decryption method with prompt.
      *
      * @test
      * @return void
      */
-    public function canDecryptPrompt() {
+    public function canDecryptPrompt()
+    {
         // Arrange
         $this->createEnvFileWithPassword();
         Config::set('laravel-envcoder.resolve', 'prompt');
 
         $env2 = fopen('.env2', 'w');
-        fwrite($env2, 'VAR1=TEST3' . PHP_EOL . 'VAR3=TEST4' . PHP_EOL . 'ENV_PASSWORD=password');
+        fwrite($env2, 'VAR1=TEST3'.PHP_EOL.'VAR3=TEST4'.PHP_EOL.'ENV_PASSWORD=password');
         fclose($env2);
         File::encryptFileWithPassword('.env2', '.env.enc', 'password');
 
-        $finalFile = 'VAR1=TEST3' . PHP_EOL . 'VAR3=TEST4' . PHP_EOL . 'VAR2=TEST2' . PHP_EOL . 'ENV_PASSWORD=password' . PHP_EOL; // use encrypted, add 3
+        $finalFile = 'VAR1=TEST3'.PHP_EOL.'VAR3=TEST4'.PHP_EOL.'VAR2=TEST2'.PHP_EOL.'ENV_PASSWORD=password'.PHP_EOL; // use encrypted, add 3
 
         // Act
         $this->artisan('env:decrypt --password=password')
@@ -252,39 +268,41 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase {
     }
 
     /**
-     * Test long values with spaces are correctly enc and decrypted
+     * Test long values with spaces are correctly enc and decrypted.
      *
      * @test
      * @return void
      */
-    public function handlesLongValues() {
+    public function handlesLongValues()
+    {
         // Arrange
         $env = fopen('.env', 'w');
-        fwrite($env, 'LONGVAR="This is a long var"' . PHP_EOL . 'SHORTVAR=TEST4' . PHP_EOL);
+        fwrite($env, 'LONGVAR="This is a long var"'.PHP_EOL.'SHORTVAR=TEST4'.PHP_EOL);
         fclose($env);
         File::encryptFileWithPassword('.env', '.env.enc', 'password');
 
         $this->artisan('env:decrypt --password=password')->assertExitCode(0);
 
         // Assert
-        $this->assertEquals('LONGVAR="This is a long var"' . PHP_EOL . 'SHORTVAR=TEST4' . PHP_EOL, file_get_contents('.env'));
+        $this->assertEquals('LONGVAR="This is a long var"'.PHP_EOL.'SHORTVAR=TEST4'.PHP_EOL, file_get_contents('.env'));
 
         unlink('.env');
         unlink('.env.enc');
     }
 
     /**
-     * Test comparison command
+     * Test comparison command.
      *
      * @test
      * @return void
      */
-    public function correctlyComparesEnvs() {
+    public function correctlyComparesEnvs()
+    {
         // Arrange
         $this->createEnvFile();
         $this->artisan('env:encrypt --password=password');
         $env = fopen('.env', 'w');
-        fwrite($env, 'VAR1=CHANGED' . PHP_EOL . 'VAR2=TEST2' . PHP_EOL . 'VAR3=NEW');
+        fwrite($env, 'VAR1=CHANGED'.PHP_EOL.'VAR2=TEST2'.PHP_EOL.'VAR3=NEW');
         fclose($env);
 
         // Act

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    /**
+    /*
      * Determines how to resolve any differences in the encrypted
      * .env file. Options are:
      *
@@ -10,5 +10,5 @@ return [
      * 'overwrite' => Will completely overwrite your .env with what is in the encrypted version
      * 'ignore' => Will ignore any changes in your encrypted .env (ie. will not decrypt)
      */
-    'resolve' => 'merge'
+    'resolve' => 'merge',
 ];
