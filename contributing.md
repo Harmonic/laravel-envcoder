@@ -6,8 +6,8 @@ Contributions are accepted via Pull Requests on [Github](https://github.com/harm
 
 # Things you could do
 If you want to contribute but do not know where to start, this list provides some starting points.
-- Add license text
-- Set up TravisCI, StyleCI, ScrutinizerCI, Coveralls
+- Add HHVM support in Travis CI
+- Set up ScrutinizerCI, Coveralls
 - Exract case statements in LaravelEnvcoder into seperate functions/classes
 
 ## Pull Requests
