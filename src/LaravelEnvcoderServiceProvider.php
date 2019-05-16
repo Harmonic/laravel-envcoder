@@ -2,18 +2,20 @@
 
 namespace harmonic\LaravelEnvcoder;
 
-use harmonic\LaravelEnvcoder\Commands\LaravelEnvcoderEncrypt;
-use harmonic\LaravelEnvcoder\Commands\LaravelEnvcoderDecrypt;
-use harmonic\LaravelEnvcoder\Commands\LaravelEnvcoderCompare;
 use Illuminate\Support\ServiceProvider;
+use harmonic\LaravelEnvcoder\Commands\LaravelEnvcoderCompare;
+use harmonic\LaravelEnvcoder\Commands\LaravelEnvcoderDecrypt;
+use harmonic\LaravelEnvcoder\Commands\LaravelEnvcoderEncrypt;
 
-class LaravelEnvcoderServiceProvider extends ServiceProvider {
+class LaravelEnvcoderServiceProvider extends ServiceProvider
+{
     /**
      * Perform post-registration booting of services.
      *
      * @return void
      */
-    public function boot() {
+    public function boot()
+    {
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'harmonic');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'harmonic');
         // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
@@ -30,9 +32,10 @@ class LaravelEnvcoderServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         //TODO: Config is not copying when published
-        $this->mergeConfigFrom(__DIR__ . '/../config/laravel-envcoder.php', 'laravel-envcoder');
+        $this->mergeConfigFrom(__DIR__.'/../config/laravel-envcoder.php', 'laravel-envcoder');
 
         // Register the service the package provides.
         $this->app->singleton('LaravelEnvcoder', function ($app) {
@@ -45,7 +48,8 @@ class LaravelEnvcoderServiceProvider extends ServiceProvider {
      *
      * @return array
      */
-    public function provides() {
+    public function provides()
+    {
         return ['LaravelEnvcoder'];
     }
 
@@ -54,10 +58,11 @@ class LaravelEnvcoderServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function bootForConsole() {
+    protected function bootForConsole()
+    {
         // Publishing the configuration file.
         $this->publishes([
-            __DIR__ . '/../config/laravel-envcoder.php' => config_path('laravel-envcoder.php'),
+            __DIR__.'/../config/laravel-envcoder.php' => config_path('laravel-envcoder.php'),
         ], 'laravel-envcoder.config'); //TODO: This isn't copying to config folder!
 
         // Publishing the views.

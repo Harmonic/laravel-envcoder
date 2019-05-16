@@ -2,11 +2,12 @@
 
 namespace harmonic\LaravelEnvcoder\Commands;
 
+use Defuse\Crypto\File;
 use harmonic\LaravelEnvcoder\LaravelEnvcoder;
 use Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException;
-use Defuse\Crypto\File;
 
-class LaravelEnvcoderCompare extends \harmonic\LaravelEnvcoder\LaravelEnvcoderBaseCommand {
+class LaravelEnvcoderCompare extends \harmonic\LaravelEnvcoder\LaravelEnvcoderBaseCommand
+{
     /**
      * The name and signature of the console command.
      *
@@ -26,7 +27,8 @@ class LaravelEnvcoderCompare extends \harmonic\LaravelEnvcoder\LaravelEnvcoderBa
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
     }
 
@@ -35,13 +37,15 @@ class LaravelEnvcoderCompare extends \harmonic\LaravelEnvcoder\LaravelEnvcoderBa
      *
      * @return mixed
      */
-    public function handle() {
+    public function handle()
+    {
         $key = $this->getPassword();
         $envcoder = new LaravelEnvcoder();
         try {
             $differences = $envcoder->compare($key);
         } catch (WrongKeyOrModifiedCiphertextException $e) {
             $this->error('Unable to decrypt .env file please check your password.');
+
             return;
         }
 
@@ -53,9 +57,9 @@ class LaravelEnvcoderCompare extends \harmonic\LaravelEnvcoder\LaravelEnvcoderBa
         foreach ($differences as $key => $value) {
             $encValue = '-';
             $decValue = '-';
-            if (!array_key_exists($key, $decryptedArray)) {
+            if (! array_key_exists($key, $decryptedArray)) {
                 $decValue = $value;
-            } elseif (!array_key_exists($key, $currentEnv)) {
+            } elseif (! array_key_exists($key, $currentEnv)) {
                 $encValue = $value;
             } else {
                 $encValue = $decryptedArray[$key];

@@ -2,10 +2,11 @@
 
 namespace harmonic\LaravelEnvcoder\Commands;
 
-use harmonic\LaravelEnvcoder\LaravelEnvcoder;
 use Illuminate\Console\Command;
+use harmonic\LaravelEnvcoder\LaravelEnvcoder;
 
-class LaravelEnvcoderEncrypt extends Command {
+class LaravelEnvcoderEncrypt extends Command
+{
     /**
      * The name and signature of the console command.
      *
@@ -25,7 +26,8 @@ class LaravelEnvcoderEncrypt extends Command {
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
     }
 
@@ -34,7 +36,8 @@ class LaravelEnvcoderEncrypt extends Command {
      *
      * @return mixed
      */
-    public function handle() {
+    public function handle()
+    {
         $envcoder = new LaravelEnvcoder();
         $key = $envcoder->getPasswordFromEnv();
         if ($key === null) {
