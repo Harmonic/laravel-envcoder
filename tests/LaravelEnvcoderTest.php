@@ -129,7 +129,7 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase
     {
         // Arrange
         $this->createEnvFileWithPassword();
-        copy('.env', 'env.testing');
+        copy('.env', '.env.testing');
         unlink('.env');
 
         // Act
