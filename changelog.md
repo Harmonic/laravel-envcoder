@@ -2,6 +2,11 @@
 
 All notable changes to `laravel-envcoder` will be documented in this file.
 
+## Version 1.0.4
+
+### Modified
+- Changed configuration file to envcoder.php from laravel-envcoder.php
+
 ## Version 1.0.3
 
 ### Added
