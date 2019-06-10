@@ -17,6 +17,12 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase
         return ['harmonic\LaravelEnvcoder\LaravelEnvcoderServiceProvider'];
     }
 
+    public function setUp() : void
+    {
+        parent::setUp();
+        Config::set('envcoder.resolve', 'merge');
+    }
+
     /**
      * Resolve application Console Kernel implementation.
      *
@@ -193,7 +199,7 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase
         // Arrange
         $this->createEnvFile();
         File::encryptFileWithPassword('.env', '.env.enc', 'password');
-        Config::set('laravel-envcoder.resolve', 'overwrite');
+        Config::set('envcoder.resolve', 'overwrite');
         $originalEnv = file_get_contents('.env');
 
         // Act
@@ -213,7 +219,7 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase
     public function canDecryptIgnore()
     {
         // Arrange
-        Config::set('laravel-envcoder.resolve', 'ignore');
+        Config::set('envcoder.resolve', 'ignore');
         $this->createEnvFile();
         $originalEnv = 'VAR1=TEST'.PHP_EOL.'VAR2=TEST2'.PHP_EOL;
 
@@ -241,7 +247,7 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase
     {
         // Arrange
         $this->createEnvFile();
-        Config::set('laravel-envcoder.resolve', 'merge');
+        Config::set('envcoder.resolve', 'merge');
 
         $env2 = fopen('.env2', 'w');
         fwrite($env2, 'VAR3=TEST3'.PHP_EOL.'VAR4=TEST4'.PHP_EOL);
@@ -271,7 +277,7 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase
     {
         // Arrange
         $this->createEnvFileWithPassword();
-        Config::set('laravel-envcoder.resolve', 'prompt');
+        Config::set('envcoder.resolve', 'prompt');
 
         $env2 = fopen('.env2', 'w');
         fwrite($env2, 'VAR1=TEST3'.PHP_EOL.'VAR3=TEST4'.PHP_EOL.'ENV_PASSWORD=password');
