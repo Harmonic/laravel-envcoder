@@ -2,6 +2,11 @@
 
 All notable changes to `laravel-envcoder` will be documented in this file.
 
+## Version 1.0.3
+
+### Added
+- Ability to encrypt/decrypt non-standard .env files such as .env.testing using --source option
+
 ## Version 1.0.2
 
 ### Added

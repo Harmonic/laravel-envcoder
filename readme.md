@@ -61,6 +61,14 @@ php artisan env:encrypt --password=password
 ```
 (replace password with your password)
 
+#### Encypting another .env file
+
+If you have multiple .env files you can add an option (--s or --source) to the encrypt command to tell Envcoder to encrypt that file instead. Envcoder will create an encrypted file with the same name and .enc appended.
+
+``` bash
+php artisan env:encrypt --s .env.testing
+```
+
 ### Decrypting your .env
 
 From your project root simply run:
@@ -75,6 +83,16 @@ You will be prompted for a password, if you prefer to enter it from the command 
 php artisan env:decrypt --password=password
 ```
 (replace the second password with your password)
+
+#### Encypting another .env file
+
+If you have encrypted an .env file with a different name (such as .env.testing) you can add an option (--s or --source) to the decrypt command to tell Envcoder to decrypt that file instead. 
+
+``` bash
+php artisan env:decrypt --source .env.testing.enc
+```
+
+This will produce a .env.testing file.
 
 ### Compare .env.enc with .env (Diff)
 
