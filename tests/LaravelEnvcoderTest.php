@@ -120,6 +120,40 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase
     }
 
     /**
+     * Can encypt a .env.testing file
+     *
+     * @test
+     * @return void
+     */
+    public function canEncryptEnvTesting()
+    {
+        // Arrange
+        $this->createEnvFileWithPassword();
+        copy('.env', 'env.testing');
+        unlink('.env');
+
+        // Act
+        $this->artisan('env:encrypt --source .env.testing');
+        copy('.env.testing', '.env.testing.original');
+        unlink('.env.testing');
+        $this->artisan('env:decrupt --p password --source .env.testing');
+
+        // Add the ENV_PASSWORD to .env.decrypted to fake it
+        $handle = fopen('.env.decrypted', 'a');
+        fwrite($handle, 'ENV_PASSWORD=password'.PHP_EOL);
+        fclose($handle);
+
+        // Assert
+        $this->assertTrue(file_exists('.env.testing.enc'));
+        $this->assertTrue(file_exists('.env.testing'));
+        $this->assertEquals(file_get_contents('.env.testing.original'), file_get_contents('.env.testing'));
+
+        unlink('.env.testing');
+        unlink('.env.testing.enc');
+        unlink('.env.testing.original');
+    }
+
+    /**
      * Can use password option and prompt for password.
      *
      * @test
