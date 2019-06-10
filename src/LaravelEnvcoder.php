@@ -35,11 +35,11 @@ class LaravelEnvcoder
         $needsPasswordAdded = false;
         if ($this->getPasswordFromEnv() !== null) {
             $contents = file_get_contents($sourceEnv);
-            $contents = preg_replace('/ENV_PASSWORD=' . $password . '\R?/', '', $contents);
+            $contents = preg_replace('/ENV_PASSWORD='.$password.'\R?/', '', $contents);
             file_put_contents($sourceEnv, $contents);
             $needsPasswordAdded = true;
         }
-        File::encryptFileWithPassword($sourceEnv, $sourceEnv . '.enc', $password);
+        File::encryptFileWithPassword($sourceEnv, $sourceEnv.'.enc', $password);
         if ($needsPasswordAdded) {
             $this->addPasswordToEnv($password);
         }
@@ -55,7 +55,7 @@ class LaravelEnvcoder
     private function addPasswordToEnv(string $password)
     {
         $handle = fopen('.env', 'a');
-        fwrite($handle, 'ENV_PASSWORD=' . $password . PHP_EOL);
+        fwrite($handle, 'ENV_PASSWORD='.$password.PHP_EOL);
         fclose($handle);
     }
 
@@ -67,7 +67,7 @@ class LaravelEnvcoder
      */
     public function envToArray(string $envFile) : array
     {
-        if (!is_file($envFile)) {
+        if (! is_file($envFile)) {
             return [];
         }
 
@@ -83,7 +83,7 @@ class LaravelEnvcoder
      */
     public function decrypt(string $password, string $sourceEnv)
     {
-        if (!\file_exists($sourceEnv)) {
+        if (! \file_exists($sourceEnv)) {
             throw new FileNotFoundException('No encrypted env file found.');
         }
 
@@ -107,7 +107,7 @@ class LaravelEnvcoder
 
                 return;
             case 'prompt':
-                $envBak = $sourceEnvUnencrypted . '.bak';
+                $envBak = $sourceEnvUnencrypted.'.bak';
                 File::decryptFileWithPassword($sourceEnv, $envBak, $password);
                 $decryptedArray = $this->envToArray($envBak);
                 $currentEnv = $this->envToArray($sourceEnvUnencrypted);
@@ -123,7 +123,7 @@ class LaravelEnvcoder
                     'current' => $currentEnv,
                 ];
             case 'merge':
-                $envBak = $sourceEnvUnencrypted . '.bak';
+                $envBak = $sourceEnvUnencrypted.'.bak';
                 File::decryptFileWithPassword($sourceEnv, $envBak, $password);
                 $decryptedArray = $this->envToArray($envBak);
                 if ($needsPasswordAdded) {
@@ -134,7 +134,7 @@ class LaravelEnvcoder
                 $envFile = fopen($sourceEnvUnencrypted, 'w');
                 foreach ($mergedArray as $key => $value) {
                     $value = LEFacade::formatValue($value);
-                    fwrite($envFile, $key . '=' . $value . PHP_EOL);
+                    fwrite($envFile, $key.'='.$value.PHP_EOL);
                 }
                 fclose($envFile);
                 unlink($envBak);
@@ -160,7 +160,7 @@ class LaravelEnvcoder
      */
     public function compare(string $password) : array
     {
-        if (!\file_exists('.env.enc')) {
+        if (! \file_exists('.env.enc')) {
             throw new FileNotFoundException('No encrypted env file found.');
         }
 
