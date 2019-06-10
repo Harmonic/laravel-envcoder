@@ -66,7 +66,7 @@ php artisan env:encrypt --password=password
 If you have multiple .env files you can add an option (--s or --source) to the encrypt command to tell Envcoder to encrypt that file instead. Envcoder will create an encrypted file with the same name and .enc appended.
 
 ``` bash
-php artisan env:encrypt --s .env.testing
+php artisan env:encrypt -s .env.testing
 ```
 
 ### Decrypting your .env
