@@ -120,7 +120,7 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase
     }
 
     /**
-     * Can encypt a .env.testing file
+     * Can encypt a .env.testing file.
      *
      * @test
      * @return void
