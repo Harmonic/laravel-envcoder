@@ -41,7 +41,7 @@ class LaravelEnvcoderDecrypt extends \harmonic\LaravelEnvcoder\LaravelEnvcoderBa
     {
         $key = $this->getPassword();
         $envcoder = new LaravelEnvcoder();
-        $resolve = config('laravel-envcoder.resolve');
+        $resolve = config('envcoder.resolve');
         $sourceEnv = $this->option('source');
 
         try {

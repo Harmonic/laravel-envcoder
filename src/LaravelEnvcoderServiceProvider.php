@@ -23,7 +23,7 @@ class LaravelEnvcoderServiceProvider extends ServiceProvider
 
         // Copy config
         $this->publishes([
-            __DIR__.'/../config/laravel-envcoder.php' => config_path('laravel-envcoder.php'),
+            __DIR__.'/../config/envcoder.php' => config_path('envcoder.php'),
         ]);
 
         // Publishing is only necessary when using the CLI.

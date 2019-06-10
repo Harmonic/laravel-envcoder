@@ -87,7 +87,7 @@ class LaravelEnvcoder
             throw new FileNotFoundException('No encrypted env file found.');
         }
 
-        $resolve = config('laravel-envcoder.resolve');
+        $resolve = config('envcoder.resolve');
 
         $needsPasswordAdded = false;
         if ($this->getPasswordFromEnv() !== null) {
