@@ -6,7 +6,8 @@ use harmonic\LaravelEnvcoder\LaravelEnvcoder;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use harmonic\LaravelEnvcoder\Facades\LaravelEnvcoder as LEFacade;
 
-class LaravelEnvcoderDecrypt extends \harmonic\LaravelEnvcoder\LaravelEnvcoderBaseCommand {
+class LaravelEnvcoderDecrypt extends \harmonic\LaravelEnvcoder\LaravelEnvcoderBaseCommand
+{
     /**
      * The name and signature of the console command.
      *
@@ -26,7 +27,8 @@ class LaravelEnvcoderDecrypt extends \harmonic\LaravelEnvcoder\LaravelEnvcoderBa
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
     }
 
@@ -35,7 +37,8 @@ class LaravelEnvcoderDecrypt extends \harmonic\LaravelEnvcoder\LaravelEnvcoderBa
      *
      * @return mixed
      */
-    public function handle() {
+    public function handle()
+    {
         $key = $this->getPassword();
         $envcoder = new LaravelEnvcoder();
         $resolve = config('laravel-envcoder.resolve');

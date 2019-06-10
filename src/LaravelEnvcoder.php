@@ -6,13 +6,15 @@ use Defuse\Crypto\File;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use harmonic\LaravelEnvcoder\Facades\LaravelEnvcoder as LEFacade;
 
-class LaravelEnvcoder {
+class LaravelEnvcoder
+{
     /**
      * Check in the ENV_PASSWORD .env variable exists and return it if so.
      *
      * @return string if exists, null otherwise
      */
-    public function getPasswordFromEnv() : ?string {
+    public function getPasswordFromEnv() : ?string
+    {
         $envArray = $this->envToArray('.env');
         if (array_key_exists('ENV_PASSWORD', $envArray)) {
             return $envArray['ENV_PASSWORD'];
@@ -28,7 +30,8 @@ class LaravelEnvcoder {
      * @param string $sourceEnv The name of the .env file to encrypt
      * @return void
      */
-    public function encrypt(string $password, string $sourceEnv) : void {
+    public function encrypt(string $password, string $sourceEnv) : void
+    {
         $needsPasswordAdded = false;
         if ($this->getPasswordFromEnv() !== null) {
             $contents = file_get_contents($sourceEnv);
@@ -49,7 +52,8 @@ class LaravelEnvcoder {
      * @param string $password
      * @return void
      */
-    private function addPasswordToEnv(string $password) {
+    private function addPasswordToEnv(string $password)
+    {
         $handle = fopen('.env', 'a');
         fwrite($handle, 'ENV_PASSWORD=' . $password . PHP_EOL);
         fclose($handle);
@@ -61,7 +65,8 @@ class LaravelEnvcoder {
      * @param string $env
      * @return array
      */
-    public function envToArray(string $envFile) : array {
+    public function envToArray(string $envFile) : array
+    {
         if (!is_file($envFile)) {
             return [];
         }
@@ -76,7 +81,8 @@ class LaravelEnvcoder {
      * @param string $sourceEnv The name of the encrypted .env file to decrypt
      * @return void
      */
-    public function decrypt(string $password, string $sourceEnv) {
+    public function decrypt(string $password, string $sourceEnv)
+    {
         if (!\file_exists($sourceEnv)) {
             throw new FileNotFoundException('No encrypted env file found.');
         }
@@ -152,7 +158,8 @@ class LaravelEnvcoder {
      * @throws WrongKeyOrModifiedCiphertextException
      * @throws FileNotFoundException
      */
-    public function compare(string $password) : array {
+    public function compare(string $password) : array
+    {
         if (!\file_exists('.env.enc')) {
             throw new FileNotFoundException('No encrypted env file found.');
         }
