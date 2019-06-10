@@ -133,10 +133,10 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase
         unlink('.env');
 
         // Act
-        $this->artisan('env:encrypt --source .env.testing');
+        $this->artisan('env:encrypt -p password --source .env.testing');
         copy('.env.testing', '.env.testing.original');
         unlink('.env.testing');
-        $this->artisan('env:decrupt --p password --source .env.testing');
+        $this->artisan('env:decrypt --p password --source .env.testing');
 
         // Add the ENV_PASSWORD to .env.decrypted to fake it
         $handle = fopen('.env.decrypted', 'a');
