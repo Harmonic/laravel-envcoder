@@ -6,6 +6,8 @@ All notable changes to `laravel-envcoder` will be documented in this file.
 
 ### Modified
 - Changed configuration file to envcoder.php from laravel-envcoder.php
+- Removed errant /vendor folder
+- Added links to the readme file on cryptography
 
 ## Version 1.0.3
 
