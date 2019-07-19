@@ -143,7 +143,7 @@ Please see [contributing.md](contributing.md) for details and a todolist.
 
 ## Security
 
-We have selected the defuse\php-encryption package to handle the encrytion and decryption of the .env file due to its ease of use and security. With that said, storing an encrypted .env file in your source control is less secure than not storing it at all. We believe only marginally, but it's up to you to weigh up the security vs. convience and make a decision for your project.
+We have selected the [defuse\php-encryption](https://github.com/defuse/php-encryption) package to handle the encryption and decryption of the .env file due to its ease of use and [security](https://github.com/defuse/php-encryption/blob/master/docs/CryptoDetails.md). With that said, storing an encrypted .env file in your source control is less secure than not storing it at all. We believe only marginally, but it's up to you to weigh up the security vs. convience and make a decision for your project.
 
 If you discover any security related issues, please email craig@harmonic.com.au instead of using the issue tracker.
 
