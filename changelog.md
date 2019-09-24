@@ -2,6 +2,11 @@
 
 All notable changes to `laravel-envcoder` will be documented in this file.
 
+## Version 1.0.5
+
+### Modified
+- Laravel 6 support
+
 ## Version 1.0.2
 
 ### Added
