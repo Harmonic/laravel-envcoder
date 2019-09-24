@@ -13,7 +13,7 @@ class LaravelEnvcoderDecrypt extends \harmonic\LaravelEnvcoder\LaravelEnvcoderBa
      *
      * @var string
      */
-    protected $signature = 'env:decrypt {--password=}';
+    protected $signature = 'env:decrypt {--p|password=} {--s|source=.env.enc}';
 
     /**
      * The console command description.
@@ -41,10 +41,11 @@ class LaravelEnvcoderDecrypt extends \harmonic\LaravelEnvcoder\LaravelEnvcoderBa
     {
         $key = $this->getPassword();
         $envcoder = new LaravelEnvcoder();
-        $resolve = config('laravel-envcoder.resolve');
+        $resolve = config('envcoder.resolve');
+        $sourceEnv = $this->option('source');
 
         try {
-            $result = $envcoder->decrypt($key);
+            $result = $envcoder->decrypt($key, $sourceEnv);
 
             if ($resolve === 'merge') {
                 if ($result) {

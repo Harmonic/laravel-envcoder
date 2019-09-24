@@ -35,14 +35,14 @@ php artisan vendor:publish --provider="harmonic\LaravelEnvcoder"
 
 ## Configuration
 
-After publishing the config you can change the default behaviour for environment variable conflict resolution in **config/laravel-envcoder.php**.
+After publishing the config you can change the default behaviour for environment variable conflict resolution in **config/envcoder.php**.
 
 * 'merge' => Will merge changes in both files, and overwrite duplicates with what is in .env.enc (default)
 * 'prompt' => Will prompt you for each value that has a different value in .env.enc vs .env or is not in both files
 * 'overwrite' => Will completely overwrite your .env with what is in the encrypted version
 * 'ignore' => Will ignore any changes in your encrypted .env (ie. will not decrypt)
 
-See config/laravel-envcoder.php for more details.
+See config/envcoder.php for more details.
 
 ## Usage
 
@@ -61,6 +61,14 @@ php artisan env:encrypt --password=password
 ```
 (replace password with your password)
 
+#### Encypting another .env file
+
+If you have multiple .env files you can add an option (--s or --source) to the encrypt command to tell Envcoder to encrypt that file instead. Envcoder will create an encrypted file with the same name and .enc appended.
+
+``` bash
+php artisan env:encrypt -s .env.testing
+```
+
 ### Decrypting your .env
 
 From your project root simply run:
@@ -75,6 +83,16 @@ You will be prompted for a password, if you prefer to enter it from the command 
 php artisan env:decrypt --password=password
 ```
 (replace the second password with your password)
+
+#### Encypting another .env file
+
+If you have encrypted an .env file with a different name (such as .env.testing) you can add an option (--s or --source) to the decrypt command to tell Envcoder to decrypt that file instead. 
+
+``` bash
+php artisan env:decrypt --source .env.testing.enc
+```
+
+This will produce a .env.testing file.
 
 ### Compare .env.enc with .env (Diff)
 
@@ -125,7 +143,7 @@ Please see [contributing.md](contributing.md) for details and a todolist.
 
 ## Security
 
-We have selected the defuse\php-encryption package to handle the encrytion and decryption of the .env file due to its ease of use and security. With that said, storing an encrypted .env file in your source control is less secure than not storing it at all. We believe only marginally, but it's up to you to weigh up the security vs. convience and make a decision for your project.
+We have selected the [defuse\php-encryption](https://github.com/defuse/php-encryption) package to handle the encryption and decryption of the .env file due to its ease of use and [security](https://github.com/defuse/php-encryption/blob/master/docs/CryptoDetails.md). With that said, storing an encrypted .env file in your source control is less secure than not storing it at all. We believe only marginally, but it's up to you to weigh up the security vs. convience and make a decision for your project.
 
 If you discover any security related issues, please email craig@harmonic.com.au instead of using the issue tracker.
 

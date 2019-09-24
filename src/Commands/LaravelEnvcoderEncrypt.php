@@ -12,7 +12,7 @@ class LaravelEnvcoderEncrypt extends Command
      *
      * @var string
      */
-    protected $signature = 'env:encrypt {--password=}';
+    protected $signature = 'env:encrypt {--p|password=} {--s|source=.env}';
 
     /**
      * The console command description.
@@ -46,7 +46,8 @@ class LaravelEnvcoderEncrypt extends Command
         if ($key === false || $key === null) {
             $key = $this->ask('Enter encryption key to encode .env');
         }
-        $envcoder->encrypt($key);
+        $sourceEnv = $this->option('source');
+        $envcoder->encrypt($key, $sourceEnv);
         $this->info('.env encryption complete');
     }
 }

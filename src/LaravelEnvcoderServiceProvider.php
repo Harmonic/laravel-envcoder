@@ -21,6 +21,11 @@ class LaravelEnvcoderServiceProvider extends ServiceProvider
         // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
+        // Copy config
+        $this->publishes([
+            __DIR__.'/../config/envcoder.php' => config_path('envcoder.php'),
+        ]);
+
         // Publishing is only necessary when using the CLI.
         if ($this->app->runningInConsole()) {
             $this->bootForConsole();
@@ -34,9 +39,6 @@ class LaravelEnvcoderServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //TODO: Config is not copying when published
-        $this->mergeConfigFrom(__DIR__.'/../config/laravel-envcoder.php', 'laravel-envcoder');
-
         // Register the service the package provides.
         $this->app->singleton('LaravelEnvcoder', function ($app) {
             return new LarevelEnvcoder;

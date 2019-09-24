@@ -7,6 +7,18 @@ All notable changes to `laravel-envcoder` will be documented in this file.
 ### Modified
 - Laravel 6 support
 
+## Version 1.0.4
+
+### Modified
+- Changed configuration file to envcoder.php from laravel-envcoder.php
+- Removed errant /vendor folder
+- Added links to the readme file on cryptography
+
+## Version 1.0.3
+
+### Added
+- Ability to encrypt/decrypt non-standard .env files such as .env.testing using --source option
+
 ## Version 1.0.2
 
 ### Added
