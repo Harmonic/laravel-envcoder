@@ -1,4 +1,4 @@
-/vendor
+vendor/*
 .env
 .phpunit.result.cache
 /.vscode
