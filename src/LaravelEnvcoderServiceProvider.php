@@ -2,10 +2,10 @@
 
 namespace harmonic\LaravelEnvcoder;
 
-use Illuminate\Support\ServiceProvider;
 use harmonic\LaravelEnvcoder\Commands\LaravelEnvcoderCompare;
 use harmonic\LaravelEnvcoder\Commands\LaravelEnvcoderDecrypt;
 use harmonic\LaravelEnvcoder\Commands\LaravelEnvcoderEncrypt;
+use Illuminate\Support\ServiceProvider;
 
 class LaravelEnvcoderServiceProvider extends ServiceProvider
 {

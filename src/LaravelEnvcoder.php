@@ -3,8 +3,8 @@
 namespace harmonic\LaravelEnvcoder;
 
 use Defuse\Crypto\File;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use harmonic\LaravelEnvcoder\Facades\LaravelEnvcoder as LEFacade;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class LaravelEnvcoder
 {

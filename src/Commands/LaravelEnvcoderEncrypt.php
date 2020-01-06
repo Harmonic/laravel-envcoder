@@ -2,8 +2,8 @@
 
 namespace harmonic\LaravelEnvcoder\Commands;
 
-use Illuminate\Console\Command;
 use harmonic\LaravelEnvcoder\LaravelEnvcoder;
+use Illuminate\Console\Command;
 
 class LaravelEnvcoderEncrypt extends Command
 {
