@@ -2,9 +2,9 @@
 
 namespace harmonic\LaravelEnvcoder\Commands;
 
+use Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException;
 use Defuse\Crypto\File;
 use harmonic\LaravelEnvcoder\LaravelEnvcoder;
-use Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException;
 
 class LaravelEnvcoderCompare extends \harmonic\LaravelEnvcoder\LaravelEnvcoderBaseCommand
 {
