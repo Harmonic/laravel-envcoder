@@ -2,9 +2,9 @@
 
 namespace harmonic\LaravelEnvcoder\Commands;
 
+use harmonic\LaravelEnvcoder\Facades\LaravelEnvcoder as LEFacade;
 use harmonic\LaravelEnvcoder\LaravelEnvcoder;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use harmonic\LaravelEnvcoder\Facades\LaravelEnvcoder as LEFacade;
 
 class LaravelEnvcoderDecrypt extends \harmonic\LaravelEnvcoder\LaravelEnvcoderBaseCommand
 {
