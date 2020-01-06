@@ -6,6 +6,7 @@ All notable changes to `laravel-envcoder` will be documented in this file.
 
 ### Modified
 - Added travis for PHP 7.4
+- Updated Symfony packages to address security vulnerabilities
 
 ### Fixed
 - Add quotations around env values that contain spaces
