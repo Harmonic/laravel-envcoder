@@ -15,7 +15,7 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase {
         return ['harmonic\LaravelEnvcoder\LaravelEnvcoderServiceProvider'];
     }
 
-    public function setUp() : void {
+    public function setUp(): void {
         parent::setUp();
         Config::set('envcoder.resolve', 'merge');
     }
@@ -35,7 +35,7 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase {
      *
      * @return array
      */
-    private function createEnvArray() : array {
+    private function createEnvArray(): array {
         $envArray = [
             'VAR1' => 'TEST',
             'VAR2' => 'TEST 2',
@@ -44,7 +44,7 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase {
         return $envArray;
     }
 
-    private function createEnvArrayWithPassword() : array {
+    private function createEnvArrayWithPassword(): array {
         $envArray = $this->createEnvArray();
         $envArray['ENV_PASSWORD'] = 'password';
 
@@ -57,7 +57,7 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase {
      * @param array $envArray Key/Value array to make into .env file
      * @return void
      */
-    private function arrayToEnvFile(array $envArray) : void {
+    private function arrayToEnvFile(array $envArray): void {
         $envFile = fopen('.env', 'w');
 
         foreach ($envArray as $key => $value) {
@@ -72,7 +72,7 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase {
      *
      * @return void
      */
-    private function createEnvFile() : void {
+    private function createEnvFile(): void {
         $envArray = $this->createEnvArray();
         $this->arrayToEnvFile($envArray);
     }
@@ -82,7 +82,7 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase {
      *
      * @return void
      */
-    private function createEnvFileWithPassword() : void {
+    private function createEnvFileWithPassword(): void {
         $envArray = $this->createEnvArrayWithPassword();
         $this->arrayToEnvFile($envArray);
     }
