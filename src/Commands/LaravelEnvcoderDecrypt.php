@@ -68,7 +68,8 @@ class LaravelEnvcoderDecrypt extends \harmonic\LaravelEnvcoder\LaravelEnvcoderBa
                                 continue;
                             }
                         }
-                        fwrite($envFile, $key.'='.$result['decrypted'][$key].PHP_EOL);
+                        $value = LEFacade::formatValue($result['decrypted'][$key]);
+                        fwrite($envFile, $key.'='.$value.PHP_EOL);
                     }
                     $varsNotYetAdded = array_diff_key($result['current'], $result['decrypted']);
                     foreach ($varsNotYetAdded as $key => $value) {

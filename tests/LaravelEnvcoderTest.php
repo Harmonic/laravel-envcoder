@@ -43,7 +43,7 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase
     {
         $envArray = [
             'VAR1' => 'TEST',
-            'VAR2' => 'TEST2',
+            'VAR2' => 'TEST 2',
         ];
 
         return $envArray;
@@ -221,7 +221,7 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase
         // Arrange
         Config::set('envcoder.resolve', 'ignore');
         $this->createEnvFile();
-        $originalEnv = 'VAR1=TEST'.PHP_EOL.'VAR2=TEST2'.PHP_EOL;
+        $originalEnv = 'VAR1=TEST'.PHP_EOL.'VAR2="TEST 2"'.PHP_EOL;
 
         $env2 = fopen('.env2', 'w');
         fwrite($env2, 'VAR3=TEST3'.PHP_EOL.'VAR4=TEST4'.PHP_EOL);
@@ -254,7 +254,7 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase
         fclose($env2);
         File::encryptFileWithPassword('.env2', '.env.enc', 'password');
 
-        $finalFile = 'VAR1=TEST'.PHP_EOL.'VAR2=TEST2'.PHP_EOL.'VAR3=TEST3'.PHP_EOL.'VAR4=TEST4'.PHP_EOL;
+        $finalFile = 'VAR1=TEST'.PHP_EOL.'VAR2="TEST 2"'.PHP_EOL.'VAR3=TEST3'.PHP_EOL.'VAR4=TEST4'.PHP_EOL;
 
         // Act
         $this->artisan('env:decrypt --password=password')->assertExitCode(0);
@@ -284,13 +284,13 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase
         fclose($env2);
         File::encryptFileWithPassword('.env2', '.env.enc', 'password');
 
-        $finalFile = 'VAR1=TEST3'.PHP_EOL.'VAR3=TEST4'.PHP_EOL.'VAR2=TEST2'.PHP_EOL.'ENV_PASSWORD=password'.PHP_EOL; // use encrypted, add 3
+        $finalFile = 'VAR1=TEST3'.PHP_EOL.'VAR3=TEST4'.PHP_EOL.'VAR2="TEST 2"'.PHP_EOL.'ENV_PASSWORD=password'.PHP_EOL; // use encrypted, add 3
 
         // Act
         $this->artisan('env:decrypt --password=password')
             ->expectsQuestion('Env variable VAR1 has encrypted value (E) TEST3 vs unencrypted value (U) TEST', 'E')
             ->expectsQuestion('Env variable VAR3 has encrypted value TEST4 but does not exist in .env add (A) or skip (S)', 'A')
-            ->expectsQuestion('Env variable VAR2 with value TEST2 found in .env not in .env.enc add (A) or skip (S)', 'A')
+            ->expectsQuestion('Env variable VAR2 with value TEST 2 found in .env not in .env.enc add (A) or skip (S)', 'A')
             ->expectsQuestion('Do you wish to encrypt your newly generated .env?', 'N')
             ->assertExitCode(0);
 
@@ -337,7 +337,7 @@ class LaravelEnvcoderTest extends Orchestra\Testbench\TestCase
         $this->createEnvFile();
         $this->artisan('env:encrypt --password=password');
         $env = fopen('.env', 'w');
-        fwrite($env, 'VAR1=CHANGED'.PHP_EOL.'VAR2=TEST2'.PHP_EOL.'VAR3=NEW');
+        fwrite($env, 'VAR1=CHANGED'.PHP_EOL.'VAR2="TEST 2"'.PHP_EOL.'VAR3=NEW');
         fclose($env);
 
         // Act
