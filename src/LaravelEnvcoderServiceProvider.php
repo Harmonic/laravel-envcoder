@@ -41,7 +41,7 @@ class LaravelEnvcoderServiceProvider extends ServiceProvider
     {
         // Register the service the package provides.
         $this->app->singleton('LaravelEnvcoder', function ($app) {
-            return new LarevelEnvcoder;
+            return new LaravelEnvcoder;
         });
     }
 
